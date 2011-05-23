@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Edit QHM Page Options</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+// Saves options to localStorage.
+function save_options() {
+	var textarea = document.getElementById("qhm_sites");
+	var qhm_sites = textarea.value;
+	localStorage["qhm_sites"] = qhm_sites;
+	
+	// Update status to let user know options were saved.
+	$("div.status")
+	.hide().text("Option Saved.")
+	.fadeIn("fast", function(){
+		var $$ = $(this);
+		setTimeout(function(){
+			$$.fadeOut("fast");
+		}, 1000);
+	});
+}
+
+// Restores select box state to saved value from localStorage.
+function restore_options() {
+	var qhm_sites = localStorage["qhm_sites"];
+	if (!qhm_sites) {
+		return;
+	}
+	var textarea = document.getElementById("qhm_sites");
+	textarea.value = qhm_sites;
+}
+
+</script>
+<style type="text/css">
+* {margin: 0;padding: 0;}
+body {
+	margin: 15px 30px;
+}
+h1 {
+	margin: 15px 0;
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+}
+h2 {
+	color: #444;
+	margin: 10px 0;
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+}
+.example {
+	white-space: pre;
+	color: #666;
+	margin: 15px 0;
+}
+textarea {
+	padding: 3px;
+	border: 1px solid #BBB;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-webkit-box-shadow: 0 1px 1px white;
+	font: 12px/18px Helvetica Neue, "Arial", Helvetica, Verdana, sans-serif;
+	text-shadow: 0 0 1px white;
+}
+button {
+	border: 0 none transparent;
+	background-color: #FF5C00;
+	display: inline-block;
+	padding: 5px 20px 6px;
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+	line-height: 1;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+	border-bottom: 1px solid rgba(0,0,0,0.25);
+	position: relative;
+	cursor: pointer;
+}
+button:hover {
+/* 	background-color: #FFD44A; */
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+.status {
+	color:#514721;
+	border-color:#ffd324;
+	display: inline-block;
+}
+.section {
+	border: 1px solid #999;
+	-moz-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	padding: 20px;
+	width: 500px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+</style>
+
+</head>
+<body onload="restore_options()">
+
+
+<h1>Edit QHM Page Options</h1>
+
+<div class="section">
+<h2>QHM Sites</h2>
+
+<div class="example">ex)
+http://www.example.com/
+http://m.example.com/
+</div>
+
+<textarea name="" cols="80" rows="5" id="qhm_sites"></textarea>
+<br /><br />
+<button onclick="save_options()">SAVE</button>
+<div class="status"></div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<html>
+<head>
+<script>
+	function editThisQHMPage(tab) {
+		var url = tab.url, editpage = "FrontPage",
+			pathinfo = url.split("?");
+		if (pathinfo.length > 1) {
+			var urlparams = pathinfo[1].split("&");
+			if (urlparams.length == 1) {
+				var urlparam = urlparams[0].split("=");
+				if (urlparam[0].match(/cmd|plugin/)) {
+
+				}
+				else {
+					editpage = pathinfo[1].length > 0? pathinfo[1]: editpage;
+				}
+			}
+			else {
+				for (var i = 0; i < urlparams.length; i++) {
+					if (urlparams[i].match(/^page=(.+)$/)) {
+						editpage = RegExp.$1;
+					}
+				}
+			}
+		}
+
+		pathinfo[1] = "cmd=edit&page=" + editpage;
+		url = pathinfo.join("?");
+
+		chrome.tabs.getSelected(null, function(tab) {
+			chrome.tabs.sendRequest(tab.id, {name: "MoveToQHM", values: [url]}, function(response) {
+//				console.log(response.farewell);
+			});
+		});
+	}
+
+	// Listen for any changes to the URL of any tab.
+//	chrome.tabs.onUpdated.addListener(checkForValidQHMUrl);
+	chrome.pageAction.onClicked.addListener(editThisQHMPage);
+	chrome.extension.onRequest.addListener(
+		function(request, sender, sendResponse)
+		{
+			if (request.name == "QHMCheck")
+			{
+				var page_title = request.values.pop();
+				chrome.pageAction.setTitle({title: "Edit " + page_title, tabId: sender.tab.id});
+				chrome.pageAction.show(sender.tab.id);
+				
+				//shortkeys
+				chrome.tabs.sendRequest(sender.tab.id, {name: "StartShortKeys"}, function(response){});
+
+				sendResponse({farewell: "QHMCheck:End"});
+			}
+			else if (request.name == "GetQHMSites")
+			{
+				var qhm_sites = localStorage["qhm_sites"];
+				if (typeof qhm_sites != "undefined")
+				{
+					sendResponse({qhm_sites: qhm_sites});
+				}
+				else
+				{
+					sendResponse({qhm_sites: false});
+				}
+			}
+			else if (request.name == "MoveToQHM")
+			{
+				editThisQHMPage(sender.tab);
+				sendResponse({});
+			}
+			else
+				sendResponse({}); // snub them.
+		}
+	);	
+</script>
+</head>
+</html>

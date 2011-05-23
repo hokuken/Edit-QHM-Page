@@ -1,0 +1,25 @@
+{
+  "name": "Edit QHM Page",
+  "version": "0.7",
+  "description": "開いているQHMページをすぐに編集状態にします",
+  "background_page": "background.html",
+  "page_action": {
+    "default_icon": "icon.png"
+  },
+  "icons": {
+  	"48": "icon_48.png",
+  	"128": "icon_128.png"
+  },
+  "permissions" : [
+    "tabs"
+  ],
+  "content_scripts" : [
+  	{
+  		"matches": ["http://*/*"],
+  		"js": ["check_qhm.js", "request_handler.js"],
+  		"run_at": "document_idle"
+  	}
+  ],
+  "options_page" : "options.html"
+  
+}

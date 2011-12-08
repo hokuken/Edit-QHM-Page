@@ -1,6 +1,6 @@
 {
   "name": "Edit QHM Page",
-  "version": "0.7",
+  "version": "1.0",
   "description": "開いているQHMページをすぐに編集状態にします",
   "background_page": "background.html",
   "page_action": {

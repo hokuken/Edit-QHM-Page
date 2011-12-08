@@ -15,7 +15,7 @@
   ],
   "content_scripts" : [
   	{
-  		"matches": ["http://*/*"],
+  		"matches": ["http://*/*", "https://*/*"],
   		"js": ["check_qhm.js", "request_handler.js"],
   		"run_at": "document_idle"
   	}
